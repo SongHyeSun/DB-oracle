@@ -291,6 +291,7 @@ ORDER BY deptno, sal DESC
 --    이름의 알파벳 순으로 정렬되도록 질의문을 형성하라.
 SELECT ename, deptno
 FROM   emp
+WHERE deptno IN(10,30)
 ORDER BY ename ASC
 ;
 --Q2) 1982년에 입사한 모든 사원의 이름과 입사일을 구하는 질의문
@@ -300,9 +301,10 @@ WHERE hiredate BETWEEN '82/01/01' AND '82/12/31'
 ;
 --Q3) 보너스를 받는 모든 사원에 대해서 이름, 급여 그리고 보너스를 출력하는
 --    질의문을 형성하라. 단 급여와 보너스에 대해서 내림차순 정렬
-SELECT ename, sal, comm, sal + NVL(comm,0) sal_com
+SELECT ename, sal, comm
 FROM emp
-ORDER BY sal_com DESC
+WHERE comm IS NOT NULL
+ORDER BY sal, comm DESC
 ;
 --Q4) 보너스가 급여의 20% 이상이고 부서번호가 30인 모든 사원에 대해서
 --    이름, 급여 그리고 보너스를 출력하는 질의문을 형성하라
