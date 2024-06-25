@@ -1,0 +1,2 @@
+CREATE USER scott IDENTIFIED BY tiger;
+GRANT DBA to scott;
