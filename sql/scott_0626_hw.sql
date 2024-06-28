@@ -120,9 +120,13 @@ SELECT
 -- Q41)emp Table 의 이름, 이름을 10자리로 하고 왼쪽에 #으로 채우기
 -- Q42)emp Table 의  이름, 업무, 업무가 MANAGER면 관리자로 출력
 -- Q43)emp Table 의  이름, 급여/7을 각각 정수, 소숫점 1자리. 10단위로   반올림하여 출력
--- Q44)
--- Q45)
--- Q46)
--- Q47)
+-- Q44)emp Table 의  이름, 급여/7을 각각 절사하여 출력
+-- Q45)emp Table 의  이름, 급여/7한 결과를 반올림,절사,ceil,floor
+-- Q46)emp Table 의 이름, 급여, 입사일, 입사기간(각각 날자,월)출력,  소숫점 이하는 반올림
+-- Q47)emp Table 의  job 이 'CLERK' 일때 10% ,'ANALYSY' 일때 20% 
+--                        'MANAGER' 일때 30% ,'PRESIDENT' 일때 40%
+--                        'SALESMAN' 일때 50% 
+--                        그외일때 60% 인상 하여 
+--   empno, ename, job, sal, 및 각 인상 급여를 출력하세요(CASE/Decode문 사용)
 -- Q48)
 -- Q49)

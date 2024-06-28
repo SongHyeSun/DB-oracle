@@ -324,3 +324,92 @@ FROM student s, professor p
 WHERE s.profno(+) = p.profno
 ORDER BY p.profno
 ;
+--- ANSI OUTER JOIN
+-- 1. ANSI RIGHT  OUTER JOIN
+-- 2. ANSI Right OUTER JOIN
+SELECT s.studno, s.name, s.profno , p.name
+FROM student s 
+     RIGHT OUTER JOIN professor p
+     ON s.profno = p.profno
+;
+---- <<<   FULL OUTER JOIN  >>> -------------------------------
+--학생 테이블과 교수 테이블을 조인하여 이름, 학년, 지도교수 이름, 직급을 출력
+-- 단, 지도학생을 배정받지 않은 교수 이름 및 
+--  지도교수가 배정되지 않은 학생이름  함께 출력하여라
+--  Oracle 지원 안 함
+SELECT s.name, s.grade, p.name, p.position
+FROM student s, professor p
+WHERE s.profno(+)=p.profno(+)
+ORDER BY p.profno
+;
+--FULL OUTER 모방 --> UNION
+SELECT s.name, s.grade, p.name, p.position
+FROM student s, professor p
+WHERE s.profno = p.profno(+)
+UNION
+SELECT s.name, s.grade, p.name, p.position
+FROM student s, professor p
+WHERE s.profno(+) = p.profno
+;
+-- 3. ANSI FULL OUTER JOIN
+SELECT s.studno, s.name, s.profno, p.name
+FROM student s
+    FULL OUTER JOIN professor p
+    ON s.profno = p.profno
+;
+-------SELF JOIN   **----------------       
+-- 하나의 테이블내에 있는 칼럼끼리 연결하는 조인이 필요한 경우 사용
+-- 조인 대상 테이블이 자신 하나라는 것 외에는 EQUI JOIN과 동일
+----------------------------------------------------------
+SELECT c.deptno, c.dname, c.college, d.dname college_name
+        --학과        학부
+FROM department c, department d
+WHERE c.college = d.deptno
+;
+--ex)SELF JOIN --> 부서 번호가 201 이상인 부서 이름과 상위 부서의 이름을 출력
+--   결과 : xxx소속은 xxx이다
+SELECT dept.dname||'소속은 '||org.dname||'이다'
+FROM department dept, department org
+WHERE dept.college=org.deptno
+AND dept.deptno>=201
+;
+SELECT CONCAT(CONCAT(dept.dname,'소속은 '),CONCAT(org.dname,'이다')) "학과와 학부"
+FROM department dept, department org
+WHERE dept.college=org.deptno
+AND dept.deptno>=201
+;
+----HW (Inner)-----------------------------------
+--Q1)이름, 관리자명(emp TBL)
+SELECT e.ename, m.ename "관리자명"
+FROM emp e, emp m
+WHERE e.empno = m.mgr
+;
+--Q2)이름,급여,부서코드,부서명,근무지, 관리자 명, 전체직원(emp ,dept TBL)
+SELECT e.ename, e.sal, e.deptno, d.dname, d.loc, m.ename
+FROM emp e, emp m, dept d
+WHERE e.deptno=d.deptno
+AND e.mgr = m.empno
+;
+--Q3)이름,급여,등급,부서명,관리자명, 급여가 2000이상인 사람
+--    (emp, dept,salgrade TBL)
+SELECT e.ename, e.sal, s.grade, d.dname, m.ename
+FROM emp e, emp m, dept d, salgrade s
+WHERE e.deptno = d.deptno
+AND   e.sal>=2000
+AND   e.sal BETWEEN s.losal AND s.hisal
+AND   e.mgr = m.empno
+;
+--Q4)보너스를 받는 사원에 대하여 이름,부서명,위치를 출력하는 SELECT 문장을 작성
+--   (emp ,dept TBL)
+SELECT e.ename, d.dname, d.loc
+FROM emp e, dept d
+WHERE e.deptno = d.deptno
+AND e.comm IS NOT NULL
+;
+--Q5)사번, 사원명, 부서코드, 부서명을 검색하라. 사원명기준으로 오름차순정열
+--   (emp ,dept TBL)
+SELECT e.empno, e.ename, d.deptno, d.dname
+FROM emp e, dept d
+WHERE e.deptno = d.deptno
+ORDER BY e.ename
+;

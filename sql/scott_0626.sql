@@ -392,7 +392,7 @@ SELECT UPPER(ename), LOWER(ename), INITCAP(ename)
 FROM emp
 ;
 --Q2)emp Table 의  이름, 업무, 업무를 2-5사이 문자 출력
-SELECT ename, job, SUBSTR(job,2,5)
+SELECT ename, job, SUBSTR(job,2,4)
 FROM emp
 ;
 --Q3)emp Table 의 이름, 이름을 10자리로 하고 왼쪽에 #으로 채우기
@@ -400,10 +400,52 @@ SELECT ename, LPAD(ename,10,'#') lpad_ename
 FROM emp
 ;
 --Q4)emp Table 의  이름, 업무, 업무가 MANAGER면 관리자로 출력
-SELECT ename, job, DECODE(job,'MANAGER','관리자')
+SELECT ename, job, REPLACE(job,'MANAGER','관리자')
 FROM emp
 ;
 --Q5)emp Table 의  이름, 급여/7을 각각 정수, 소숫점 1자리. 10단위로   반올림하여 출력
 SELECT ename, ROUND(sal/7), ROUND(sal/7,1), ROUND(sal/7,-1)
+FROM emp
+;
+--Q6)emp Table 의  이름, 급여/7을 각각 절사하여 출력
+SELECT ename, TRUNC(sal/7)
+FROM emp
+;
+--Q7)emp Table 의  이름, 급여/7한 결과를 반올림,절사,ceil,floor
+SELECT ename, ROUND(sal/7), TRUNC(sal/7), CEIL(sal/7), FLOOR(sal/7)
+FROM emp
+;
+--Q8)emp Table 의  이름, 급여, 급여/7한 나머지
+SELECT ename, sal, MOD(sal,7)
+FROM emp
+;
+--Q9)emp Table 의 이름, 급여, 입사일, 입사기간(각각 날자,월)출력,  소숫점 이하는 반올림
+SELECT ename, sal, hiredate,
+       ROUND(sysdate-hiredate) 근무기간,
+       ROUND(months_between(sysdate,hiredate)) 입사기간
+FROM emp
+;
+--Q10)emp Table 의  job 이 'CLERK' 일때 10% ,'ANALYSY' 일때 20% 
+--                        'MANAGER' 일때 30% ,'PRESIDENT' 일때 40%
+--                        'SALESMAN' 일때 50% 
+--                        그외일때 60% 인상 하여 
+--   empno, ename, job, sal, 및 각 인상 급여를 출력하세요(CASE/Decode문 사용)
+SELECT empno, ename, job, sal,
+       CASE WHEN job='CLERK'     THEN sal*1.1
+            WHEN job='ANALYSY'   THEN sal*1.2
+            WHEN job='MANAGER'   THEN sal*1.3
+            WHEN job='PRESIDENT' THEN sal*1.4
+            WHEN job='SALESMAN'  THEN sal*1.5
+            ELSE                      sal*1.6
+            END 급여인상
+FROM emp
+;
+SELECT empno, ename, job, sal,
+       DECODE(job,'CLERK',     sal*1.1,
+                  'ANALYSY',   sal*1.2,
+                  'MANAGER',   sal*1.3,
+                  'PRESIDENT', sal*1.4,
+                  'SALESMAN',  sal*1.5,
+                               sal*1.6) 급여인상
 FROM emp
 ;

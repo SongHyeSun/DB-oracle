@@ -36,6 +36,7 @@ FROM   student;
 --      칼럼 이름을 'weigh_pound'라는 별명으로 출력하여라.
 --      출력 내용은 이름, 몸무게, weigh_pound
 --      1kg은 2.2pound
+--      DML이다 
 SELECT name, weight, weight*2.2 AS weigh_pound
 From student;
 
@@ -44,10 +45,11 @@ From student;
 CREATE TABLE ex_type
 (c   CHAR(10),
  v   VARCHAR2(10)
- )
+ );
  -- DML이라 부른다.
  INSERT INTO ex_type
- VALUES('sql','sql');
+ VALUES('sql','sql')
+ ;
  --DCL이 commit
  COMMIT;
  
@@ -66,6 +68,19 @@ CREATE TABLE ex_type
  WHERE  v = c
  ;
  
+ SELECT *
+ FROM   ex_type
+ WHERE  v = trim(c)
+ ;
+ 
+ CREATE TABLE student2
+ (grade  number(1),
+  name   VARCHAR2(20)
+  );
+  SELECT studno, name, deptno
+  FROM 
+  
+  
  --조건절 where절
  --ex) 학생 테이블에서 1학년 학생만 검색하여 학번, 이름, 학과 번호를 출력하여라 (HW01)
  SELECT studno, name, deptno
@@ -294,17 +309,20 @@ FROM   emp
 WHERE deptno IN(10,30)
 ORDER BY ename ASC
 ;
+
 --Q2) 1982년에 입사한 모든 사원의 이름과 입사일을 구하는 질의문
 SELECT ename, hiredate
 FROM emp
 WHERE hiredate BETWEEN '82/01/01' AND '82/12/31'
+--WHERE TO_CHAR(hiredate,'yyddmm') LIKE '82%'
 ;
+
 --Q3) 보너스를 받는 모든 사원에 대해서 이름, 급여 그리고 보너스를 출력하는
 --    질의문을 형성하라. 단 급여와 보너스에 대해서 내림차순 정렬
 SELECT ename, sal, comm
 FROM emp
 WHERE comm IS NOT NULL
-ORDER BY sal, comm DESC
+ORDER BY sal DESC, comm DESC
 ;
 --Q4) 보너스가 급여의 20% 이상이고 부서번호가 30인 모든 사원에 대해서
 --    이름, 급여 그리고 보너스를 출력하는 질의문을 형성하라
