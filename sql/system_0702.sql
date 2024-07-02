@@ -1,0 +1,3 @@
+-- Backup Dir »ý¼º
+CREATE OR REPLACE DIRECTORY mdBackup2 AS 'C:\BACKUP\oraBackup';
+GRANT READ,WRITE ON DIRECTORY mdBackup2 TO scott;
