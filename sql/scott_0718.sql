@@ -17,3 +17,14 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('급   여 : '||p_sal);
     
 END Emp_Info3;
+
+CREATE TABLE MEMBER1
+    (id         VARCHAR2(10)
+     CONSTRAINT PK_MEMBERY1_ID PRIMARY KEY, --ID
+     password   VARCHAR2(20),       --비밀번호
+     name       VARCHAR2(100),      --이름
+     reg_date   Date                --일자
+     ) TABLESPACE "SYSTEM";
+     
+INSERT INTO scott.member1 (ID,password,name,reg_date)
+VALUES ('aa','1234','김유신',sysdate);
