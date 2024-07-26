@@ -1,0 +1,55 @@
+--------------------------------------------------------
+--  파일이 생성됨 - 화요일-06월-28-2024  
+--------------------------------------------------------
+--------------------------------------------------------
+--  DDL for Table MEMBER2
+--------------------------------------------------------
+
+  CREATE TABLE "SCOTT"."MEMBER2" 
+   (	"ID" VARCHAR2(12 BYTE) Primary KEY, 
+	"PASSWD" VARCHAR2(12 BYTE), 
+	"NAME" VARCHAR2(20 BYTE), 
+	"ADDRESS" VARCHAR2(50 BYTE), 
+	"TEL" VARCHAR2(20 BYTE), 
+	"REG_DATE" DATE
+   ) SEGMENT CREATION IMMEDIATE 
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "SYSTEM" ;
+REM INSERTING into SCOTT.MEMBER2
+SET DEFINE OFF;
+Insert into SCOTT.MEMBER2 (ID,PASSWD,NAME,ADDRESS,TEL,REG_DATE) values ('aa','1234','김유신','서라벌1','010-2222-3334',to_date('24/07/28','RR/MM/DD'));
+Insert into SCOTT.MEMBER2 (ID,PASSWD,NAME,ADDRESS,TEL,REG_DATE) values ('bb','1234','강감찬','거란','010-3333-7777',to_date('24/07/28','RR/MM/DD'));
+Insert into SCOTT.MEMBER2 (ID,PASSWD,NAME,ADDRESS,TEL,REG_DATE) values ('kk2','kk2','홍길동 2','서울 강남구 2번지','02-1111-2224',to_date('24/07/28','RR/MM/DD'));
+Insert into SCOTT.MEMBER2 (ID,PASSWD,NAME,ADDRESS,TEL,REG_DATE) values ('hh','1234','신유겸','개성','010-6667-8989',to_date('24/07/28','RR/MM/DD'));
+Insert into SCOTT.MEMBER2 (ID,PASSWD,NAME,ADDRESS,TEL,REG_DATE) values ('ahn','1234','안예은','케이팝','111-222-3333',to_date('16/04/22','RR/MM/DD'));
+Insert into SCOTT.MEMBER2 (ID,PASSWD,NAME,ADDRESS,TEL,REG_DATE) values ('kk0','kk0','홍길동 0','서울 강남구 0번지','02-1111-2222',to_date('24/07/28','RR/MM/DD'));
+Insert into SCOTT.MEMBER2 (ID,PASSWD,NAME,ADDRESS,TEL,REG_DATE) values ('kk1','kk1','홍길동 1','서울 강남구 1번지','02-1111-2223',to_date('24/07/28','RR/MM/DD'));
+Insert into SCOTT.MEMBER2 (ID,PASSWD,NAME,ADDRESS,TEL,REG_DATE) values ('kk3','kk3','홍길동 3','서울 강남구 3번지','02-1111-2225',to_date('24/07/28','RR/MM/DD'));
+Insert into SCOTT.MEMBER2 (ID,PASSWD,NAME,ADDRESS,TEL,REG_DATE) values ('kk5','kk5','홍길동 5','서울 강남구 5번지','02-1111-2227',to_date('24/07/28','RR/MM/DD'));
+Insert into SCOTT.MEMBER2 (ID,PASSWD,NAME,ADDRESS,TEL,REG_DATE) values ('kk7','kk7','홍길동 7','서울 강남구 7번지','02-1111-2229',to_date('24/07/28','RR/MM/DD'));
+Insert into SCOTT.MEMBER2 (ID,PASSWD,NAME,ADDRESS,TEL,REG_DATE) values ('kk8','kk8','홍길동 8','서울 강남구 8번지','02-1111-2230',to_date('24/07/28','RR/MM/DD'));
+Insert into SCOTT.MEMBER2 (ID,PASSWD,NAME,ADDRESS,TEL,REG_DATE) values ('kk9','kk9','홍길동 9','서울 강남구 9번지','02-1111-2231',to_date('24/07/28','RR/MM/DD'));
+Insert into SCOTT.MEMBER2 (ID,PASSWD,NAME,ADDRESS,TEL,REG_DATE) values ('kkk','1234','김유신','서라벌','010-2222-3333',to_date('24/07/28','RR/MM/DD'));
+--------------------------------------------------------
+--  DDL for Index SYS_C007019
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "SCOTT"."SYS_C007019" ON "SCOTT"."MEMBER2" ("ID") 
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "SYSTEM" ;
+--------------------------------------------------------
+--  Constraints for Table MEMBER2
+--------------------------------------------------------
+
+  ALTER TABLE "SCOTT"."MEMBER2" ADD PRIMARY KEY ("ID")
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "SYSTEM"  ENABLE;
+  ALTER TABLE "SCOTT"."MEMBER2" MODIFY ("TEL" NOT NULL ENABLE);
+  ALTER TABLE "SCOTT"."MEMBER2" MODIFY ("NAME" NOT NULL ENABLE);
+  ALTER TABLE "SCOTT"."MEMBER2" MODIFY ("PASSWD" NOT NULL ENABLE);
