@@ -382,22 +382,28 @@ AND dept.deptno>=201
 --Q1)이름, 관리자명(emp TBL)
 SELECT e.ename, m.ename "관리자명"
 FROM emp e, emp m
-WHERE e.empno = m.mgr
+WHERE m.empno = e.mgr
 ;
 --Q2)이름,급여,부서코드,부서명,근무지, 관리자 명, 전체직원(emp ,dept TBL)
-SELECT e.ename, e.sal, e.deptno, d.dname, d.loc, m.ename
+SELECT e.ename, e.sal, e.deptno, d.dname, d.loc, m.ename 관리자
 FROM emp e, emp m, dept d
 WHERE e.deptno=d.deptno
-AND e.mgr = m.empno
+AND e.mgr = m.empno(+)
 ;
 --Q3)이름,급여,등급,부서명,관리자명, 급여가 2000이상인 사람
 --    (emp, dept,salgrade TBL)
-SELECT e.ename, e.sal, s.grade, d.dname, m.ename
+SELECT e.ename 이름, e.sal, s.grade, d.dname, m.ename 관리자명
 FROM emp e, emp m, dept d, salgrade s
-WHERE e.deptno = d.deptno
-AND   e.sal>=2000
+WHERE e.mgr = m.empno
+AND   e.deptno = d.deptno
 AND   e.sal BETWEEN s.losal AND s.hisal
-AND   e.mgr = m.empno
+AND   e.sal>=2000
+;
+SELECT e.ename 이름, e.sal, s.grade, d.dname, m.ename 관리자명
+FROM (SELECT * FROM emp WHERE sal>=2000) e, emp m, dept d, salgrade s
+WHERE e.mgr = m.empno
+AND   e.deptno = d.deptno
+AND   e.sal BETWEEN s.losal AND s.hisal
 ;
 --Q4)보너스를 받는 사원에 대하여 이름,부서명,위치를 출력하는 SELECT 문장을 작성
 --   (emp ,dept TBL)
@@ -405,10 +411,11 @@ SELECT e.ename, d.dname, d.loc
 FROM emp e, dept d
 WHERE e.deptno = d.deptno
 AND e.comm IS NOT NULL
+--AND e.comm>0
 ;
 --Q5)사번, 사원명, 부서코드, 부서명을 검색하라. 사원명기준으로 오름차순정열
 --   (emp ,dept TBL)
-SELECT e.empno, e.ename, d.deptno, d.dname
+SELECT e.empno , e.ename, d.deptno, d.dname
 FROM emp e, dept d
 WHERE e.deptno = d.deptno
 ORDER BY e.ename

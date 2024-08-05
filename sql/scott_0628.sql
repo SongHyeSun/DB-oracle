@@ -226,7 +226,7 @@ ORDER BY deptno, grade
 ;
 -------------  HW (emp table) -----------------------
 -- 1. Blake와 같은 부서에 있는 모든 사원에 대해서 사원 이름과 입사일을 디스플레이하라
-SELECT ename, hiredate
+SELECT ename, hiredate, deptno
 FROM emp
 WHERE deptno = (
                 SELECT deptno
@@ -246,17 +246,32 @@ ORDER BY sal DESC
 ;
 -- 3. (보너스를 받는 사원의 부서 번호와 
 --    급여에 일치하는 사원)의 이름, 부서 번호 그리고 급여를 디스플레이하라.
-SELECT ename, deptno, sal
+SELECT e1.ename, e1.deptno, e1.sal
 FROM emp e1, emp e2
 WHERE (e1.deptno, e2.sal) IN (
-                       SELECT deptno
+                       SELECT deptno, sal
                        FROM emp
                        WHERE comm IS NOT NULL
                        AND e1.sal = e2.sal
                        AND e1.ename != e2.ename
                    )
 ;
-
+SELECT ename, deptno, sal
+FROM emp
+WHERE (deptno, sal) IN
+            ( SELECT deptno, sal
+              FROM emp
+              WHERE comm IS NOT NULL
+             )
+;
+SELECT ename, deptno, sal
+FROM emp
+WHERE deptno IN
+            ( SELECT deptno
+              FROM emp
+              WHERE comm IS NOT NULL
+             )
+;
 ----------------------------------------------------------------------
 --  데이터 조작어 (DML:Data Manpulation Language)  **  ----------
 -- 1.정의 : 테이블에 새로운 데이터를 입력하거나 기존 데이터를 수정 또는 삭제하기 위한 명령어
@@ -311,8 +326,12 @@ CREATE TABLE Religion
 --20	카톨릭교
 --30	불교
 --40	무교
-commit;
-rollback;
+INSERT INTO Religion(religion_no, religion_name) VALUES (10,'기독교');
+INSERT INTO Religion(religion_name, religion_no) VALUES ('카톨릭교',20);
+INSERT INTO Religion VALUES (30,'불교');
+INSERT INTO Religion VALUES (40,'무교');
+COMMIT;
+ROLLBACK;
 
 --------------------------------------------------
 -----   다중 행 입력                          ------

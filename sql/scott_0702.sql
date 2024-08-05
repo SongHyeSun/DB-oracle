@@ -3,8 +3,9 @@
 ------------------------------------------------------------------------------
 -- View : 하나 이상의 기본 테이블이나 다른 뷰를 이용하여 생성되는 가상 테이블
 --        뷰는 데이터딕셔너리 테이블에 뷰에 대한 정의만 저장
---       장점 :   보안 
---       단점 :   Performance(성능)은 더 저하
+--       장점 : 1) 보안 
+--             2) 고급 기술자가 초급 기술자의 SQL 능력을 cover
+--       단점 : Performance(성능)은 더 저하
 CREATE OR REPLACE VIEW VIEW_PROFESSOR AS
 SELECT profno, name, userid, position, hiredate, deptno
 FROM professor
@@ -90,6 +91,7 @@ ROLLBACK;
 CREATE OR REPLACE VIEW v_stud_dept101 AS
 SELECT studno, name, deptno
 FROM student
+WHERE deptno=101
 ;
 --문2) 학생 테이블과 부서 테이블을 조인하여 102번 학과 학생들의 학번, 이름, 학년, 학과 이름으로 정의되는 복합 뷰를 생성
 --      뷰 명 :   v_stud_dept102
@@ -97,6 +99,7 @@ CREATE OR REPLACE VIEW v_stud_dept102 AS
 SELECT s.studno, s.name, s.grade, d.dname
 FROM student s, department d
 WHERE s.deptno=d.deptno
+AND   s.deptno=102
 ;
 --문3)  교수 테이블에서 학과별 평균 급여와     총계로 정의되는 뷰를 생성
 --  뷰 명 :  v_prof_avg_sal       Column 명 :   avg_sal      sum_sal
@@ -104,6 +107,16 @@ CREATE OR REPLACE VIEW v_prof_avg_sal AS
 SELECT deptno, AVG(sal) avg_sal, SUM(sal) sum_sal
 FROM professor
 GROUP BY deptno
+;
+--2. GROUP 함수 COLUMN 등록 안됨
+INSERT INTO v_prof_avg_sal
+VALUES(203,600,300)
+;
+--VIEW 삭제
+DROP VIEW v_stud_dept102;
+
+SELECT VIEW_NAME, TEXT
+FROM USER_VIEWS
 ;
 -------------------------------------
 ---- 계층적 질의문
@@ -144,10 +157,10 @@ CONNECT BY PRIOR deptno = college
 ;
 
 ------------------------------------------------------
----      TableSpace  
----  정의  :데이터베이스 오브젝트 내 실제 데이터를 저장하는 공간
---           이것은 데이터베이스의 물리적인 부분이며, 세그먼트로 관리되는 모든 DBMS에 대해 
---           저장소(세그먼트)를 할당
+--       TableSpace  (실제 table이 저장되는 공간)
+---정의  :데이터베이스 오브젝트 내 실제 데이터를 저장하는 공간
+--       이것은 데이터베이스의 물리적인 부분이며, 세그먼트로 관리되는 모든 DBMS에 대해 
+--       저장소(세그먼트)를 할당
 ------------------------------------------------------
 -- 1. TableSpace 생성
 CREATE TABLESPACE user1 DATAFILE 'C:\BACKUP\tableSpace\user1.ora' SIZE 100M;
@@ -169,12 +182,13 @@ ALTER TABLE JOB3 MOVE TABLESPACE USER2
 -- 3.  테이블 스페이스 Size 변경
 ALTER DATABASE DATAFILE 'C:\BACKUP\tableSpace\user4.ora' RESIZE 200M;
 -----------cmd 입력!--------------------------------------
+--전부 system에서 권한을 준 후에 할 수 있다. (system_0702.sql)
 -- Oracle 전체 Backup  (scott) -> cmd에 입력!!
 EXPDP scott/tiger DIRECTORY=mdBackup2 DUMPFILE=scott.dmp;
 -- Oracle 전체 Restore  (scott)
 IMPDP scott/tiger DIRECTORY=mdBackup2 DUMPFILE=scott.dmp;
 
--- Oracle 부분 Backup후  부분 Restore
+-- Oracle 부분 Backup후  부분 Restore (남의 것을 함부러 restore 시키지 말아라)
 EXP scott/tiger FILE=dept_second.dmp TABLES=dept_second
 EXP scott/tiger FILE=address.dmp TABLES=address
 ;
@@ -185,9 +199,9 @@ IMP scott/tiger FILE=address.dmp    tables=address
 ----------------------------------------------------------------------------------------
 -------                     Trigger 
 --  1. 정의 : 어떤 사건이 발생했을 때 내부적으로 실행되도록 데이터베 이스에 저장된 프로시저
---              트리거가 실행되어야 할 이벤트 발생시 자동으로 실행되는 프로시저 
---              트리거링 사건(Triggering Event), 즉 오라클 DML 문인 INSERT, DELETE, UPDATE이 
---              실행되면 자동으로 실행
+--           트리거가 실행되어야 할 이벤트 발생시 자동으로 실행되는 프로시저 
+--           트리거링 사건(Triggering Event), 즉 오라클 DML 문인 INSERT, DELETE, UPDATE이 
+--           실행되면 자동으로 실행
 --  2. 오라클 트리거 사용 범위
 --    1) 데이터베이스 테이블 생성하는 과정에서 참조 무결성과 데이터 무결성 등의 복잡한 제약 조건 생성하는 경우 
 --    2) 데이터베이스 테이블의 데이터에 생기는 작업의 감시, 보완 

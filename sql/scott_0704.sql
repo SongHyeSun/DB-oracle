@@ -13,7 +13,7 @@
 -- 4) 계산 된 값 Return   number
 -------------------------------------------------------------
 CREATE OR REPLACE FUNCTION emp_tax3 --1) Parameter: 사번
- (p_empno in emp.empno%TYPE)
+ (p_empno IN emp.empno%TYPE)
  RETURN NUMBER
 IS
     v_sal emp.sal%TYPE;
@@ -94,22 +94,61 @@ CREATE OR REPLACE PROCEDURE Delete_emp
  --PARAMETER
  (p_empno IN emp.empno%TYPE)
 IS
-    --변수
-    v_emp emp%ROWTYPE;
+    --삭제할 데이터를 확인하기 변수 선언
+    v_empno     emp.empno%TYPE;
+    v_ename     emp.ename%TYPE;
+    v_hiredate  emp.hiredate%TYPE;
 BEGIN
     DBMS_OUTPUT.ENABLE;
-    SELECT *
-    INTO v_emp
+    SELECT empno, ename, hiredate
+    INTO v_empno, v_ename, v_hiredate
     FROM emp
-    WHERE deptno=p_deptno;
+    WHERE empno=p_empno;
     
-    DBMS_OUTPUT.PUT_LINE('사원번호 : '||p_empno);
-    DBMS_OUTPUT.PUT_LINE('사원이름 : '||d_ename);
-    DBMS_OUTPUT.PUT_LINE('입 사 일 : '||d_hiredate);
+    DBMS_OUTPUT.PUT_LINE('사원번호 : '||v_empno);
+    DBMS_OUTPUT.PUT_LINE('사원이름 : '||v_ename);
+    DBMS_OUTPUT.PUT_LINE('입 사 일 : '||v_hiredate);
     
-    DELETE FROM emp
+    DELETE
+    FROM emp
     WHERE p_empno = empno;
+    DBMS_OUTPUT.PUT_LINE('데이터 삭제 성공');
 END Delete_emp;
+
+create or replace PROCEDURE Delete_Emp3
+( p_empno IN       emp.empno%TYPE,
+  p_result  IN OUT varchar2
+)
+IS
+    -- 삭제 데이터를 확인하기 변수 선언
+     v_empno     emp.empno%TYPE;
+     v_ename     emp.ename%TYPE;
+     v_hiredate   emp.hiredate%TYPE;
+BEGIN
+    DBMS_OUTPUT.ENABLE;
+   -- 삭제할  데이터 확인용 쿼리
+    SELECT  empno,     ename,   hiredate
+    INTO    v_empno,   v_ename, v_hiredate
+    FROM    emp
+    WHERE   empno = p_empno ;
+    DBMS_OUTPUT.PUT_LINE( '사원번호 : ' ||v_empno );
+    DBMS_OUTPUT.PUT_LINE( '사원이름 : ' ||v_ename );
+    DBMS_OUTPUT.PUT_LINE( '입 사 일 : ' ||v_hiredate );
+    DBMS_OUTPUT.PUT_LINE( '결     과 : ' ||p_result );
+   -- 삭제 쿼리
+    DELETE
+    FROM emp
+    WHERE empno = p_empno ;
+    DBMS_OUTPUT.PUT_LINE( '데이터 삭제 성공 ' );
+    p_result := '1';
+    DBMS_OUTPUT.PUT_LINE( '결     과 : ' ||p_result );
+    EXCEPTION
+        WHEN OTHERS THEN
+            p_result := '0';
+            DBMS_OUTPUT.PUT_LINE( '결     과 : ' ||p_result );
+            DBMS_OUTPUT.PUT_LINE(SQLERRM||'에러 발생 ');
+
+END Delete_Emp3;
 
 ---------------------------------------------------------
 --현장 work02)
