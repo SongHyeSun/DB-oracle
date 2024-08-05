@@ -1,0 +1,2 @@
+CREATE USER scottJpa IDENTIFIED BY tiger;
+GRANT DBA TO scottJpa;
